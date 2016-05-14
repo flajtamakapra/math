@@ -1197,11 +1197,11 @@ inline ofVec3f ofVec3f::operator-() const {
 //operator overloading for float
 //
 //
-inline void ofVec3f::operator=( const ofVec3f vec){
-	x = vec.x;
-	y = vec.y;
-	vec.z? z = vec.z: z = 0;
-}
+//inline void ofVec3f::operator=( const float f){
+//	x = f;
+//	y = f;
+//	z = f;
+//}
 
 inline ofVec3f ofVec3f::operator+( const float f ) const {
 	return ofVec3f( x+f, y+f, z+f);
