@@ -794,6 +794,41 @@ public:
 	/// ~~~~
 	/// 
   	ofVec3f& normalize();
+
+
+    //---------------------
+	/// \name Limit
+	/// \{
+	
+	/// \brief Return a relative normalized copy of this vector. 
+	/// 
+	/// *Normalization* means to scale the vector so that its length
+	/// (magnitude) is exactly 1, at which stage all that is left is the
+	/// direction. A normalized vector is usually called a *unit vector*, and
+	/// can be used to represent a pure direction (heading).	
+	/// 
+	/// ~~~~{.cpp}
+	/// ofVec3f v1(0, 0, 0);
+	/// ofVec3f v11(5, 0, 0);
+	/// ofVec3f v1Normalized = v1.getNormalized(v11); // (1, 0, 0)
+	/// ~~~~
+	ofVec3f  getNormalized( const ofVec3f& vec ) const;
+   
+	/// \brief Normalize the vector.
+	/// 
+	/// *Normalizing* means to scale the vector so that its length (magnitude)
+	/// is exactly 1, at which stage all that is left is the direction. A
+	/// normalized vector is usually called a *unit vector*, and can be used
+	/// to represent a pure direction (heading).	
+	/// 
+	/// ~~~~{.cpp}
+	/// ofVec3f v1(5, 0, 0);
+	/// v1.normalize(); // v2 is now (1, 0, 0)
+	/// ofVec3f v2(5, 0, 5);
+	/// v2.normalize(); // v2 is now (√2, 0, √2)
+	/// ~~~~
+	/// 
+  	ofVec3f& normalize( const ofVec3f& vec );
 	
 	
 	/// \brief Return a copy of this vector with its length (magnitude) restricted to a
@@ -1686,8 +1721,8 @@ inline ofVec3f& ofVec3f::average( const ofVec3f* points, int num ) {
 
 
 
-// Normalization
-//
+// Absolute Normalization
+// from 0,0,0
 //
 inline ofVec3f ofVec3f::normalized() const {
 	return getNormalized();
@@ -1712,6 +1747,35 @@ inline ofVec3f& ofVec3f::normalize() {
 	return *this;
 }
 
+// Relative Normalization
+// from ofVec3f(x1,y1,z1)
+//
+//inline ofVec3f ofVec3f::normalized( ofVec3f vec) const {
+//	return getNormalized(vec);
+//}
+
+inline ofVec3f ofVec3f::getNormalized( const ofVec3f& vec) const {
+	// distance entre 0 et le point: 
+	// float length = (float)sqrt(x*x + y*y + z*z);
+
+	// distance entre vec et this
+	float length = this->distance(vec);
+	if( length > 0 ) {
+		return ofVec3f( x/length, y/length, z/length );
+	} else {
+		return ofVec3f();
+	}
+}
+/*
+inline ofVec3f& ofVec3f::normalize( ofVec3f& vec) {
+	float length = (float)sqrt(x*x + y*y + z*z);
+	if( length > 0 ) {
+		x /= length;
+		y /= length;
+		z /= length;
+	}
+	return *this;
+}*/
 
 
 // Limit length.
